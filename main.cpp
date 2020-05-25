@@ -64,28 +64,62 @@ send me a DM to check your pull request
 #include <string>
 struct T
 {
-    T(<#type name#> v, const char* <#variable name#>)   //1
+    int value;
+    std::string name;
+
+    T(int v, const char* charPointer)
+    {
+        value = v;
+        name = charPointer;
+    }   //1
+    
     //2
     //3
 };
 
-struct <#structName1#>                                //4
+struct MyStruct                                //4
 {
-    <#type name#> compare(<#type name#> a, <#type name#> b) //5
+    T* compare(T* a, T* b) //5
     {
-        if( a->value < b->value ) return a;
-        if( a->value > b->value ) return b;
+        if(a != nullptr && b != nullptr)
+        {
+            if( a->value < b->value ) return a;
+            if( a->value > b->value ) return b;
+        }    
         return nullptr;
     }
 };
 
 struct U
 {
-    float <#name1#> { 0 }, <#name2#> { 0 };
-    <#returnType#> <#memberFunction#>(<#type name#>* <#updatedValue#>)      //12
+    float value1 { 0 }, value2 { 0 };
+    float add(float* updatedValue)      //12
     {
-        
+        if(updatedValue != nullptr)
+        {
+          std::cout << "U's value1 value is " << this->value1 << std::endl;
+          value1 = *updatedValue;
+          std::cout << "U's value1 new value is " << this->value1 << std::endl;
+        }
+
+        while(std::abs(value1 - value2) > 0.001f)
+        {
+            if(std::abs(value2) > std::abs(value1))
+            {
+                ++value1;
+            }
+            else
+            {
+                ++value2;
+            }
+        }
+
+        std::cout << "U's value2 updated value: " << value2 << std::endl;
+
+        return value2 + value1;      
     }
+
+
 };
 
 struct <#structname2#>
