@@ -67,11 +67,7 @@ struct T
     float value;
     std::string name;
     
-    T(float v, const char* nameptr)
-    {
-        value = v;
-        name = nameptr;
-    }   //1
+    T(float v, const char* nameptr) : value(v), name(nameptr){}   //1
     //2
     //3
 };
@@ -91,7 +87,7 @@ struct MyStruct                                //4
 
 struct U
 {
-    float value1 { 0 }, value2 { 0 };
+    float value1 { 0.f }, value2 { 0.f };
     float multiply(float* updatedValue)      //12
     {
         if(updatedValue != nullptr)
@@ -103,14 +99,7 @@ struct U
 
         while(std::abs(value1 - value2) > 0.001f)
         {
-            if(std::abs(value2) > std::abs(value1))
-            {
-                ++value1;
-            }
-            else
-            {
-                ++value2;
-            }
+            value2 += 0.1f;
         }
 
         std::cout << "U's value2 updated value: " << value2 << std::endl;
@@ -122,16 +111,20 @@ struct U
 
 struct StaticStruct
 {
-    static float staticFunction(U* that, float* updatedValue )        //10
-    {
-        std::cout << "U's value1 value: " << that->value1 << std::endl;
-        that->value1 = *updatedValue;
-        std::cout << "U's value1 updated value: " << that->value1 << std::endl;
-        while(std::abs(that->value2 - that->value1) > 0.001f)
+    static float staticFunction(U* that, float* updatedValue){   
+        if(that != nullptr && updatedValue != nullptr)
         {
-            that->value2 +=0.1f;
-        }
+            std::cout << "U's value1 value: " << that->value1 << std::endl;
+            that->value1 = *updatedValue;
+            std::cout << "U's value1 updated value: " << that->value1 << std::endl;
+            while(std::abs(that->value2 - that->value1) > 0.001f)
+            {
+                that->value2 +=0.1f;
+            }
+        
         std::cout << "U's value2 updated value: " << that->value2 << std::endl;
+        }
+        
         return that->value2 * that->value1;
     }
 };
@@ -142,10 +135,12 @@ int main()
     T t2(-0.2f , "t2");                                             //6
     
     MyStruct f;                                            //7
-    auto* smaller = f.compare(&t1 ,&t2);                       if(smaller != nullptr)      //8
-    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+    auto* smaller = f.compare(&t1 ,&t2);                         
+    if(smaller != nullptr)      //8
+        std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+        
     else
-    std::cout << t1.name << "and" << t2.name << " are equel." << std::endl;
+        std::cout << t1.name << "and" << t2.name << " are equel." << std::endl;
     
     U u1;
     float updatedValue = 5.f;
