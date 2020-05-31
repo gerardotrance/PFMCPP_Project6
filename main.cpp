@@ -148,6 +148,8 @@ int main()
     
     U u2;
     std::cout << "[member func] u2's multiplied values: " << u2.multiply( &updatedValue ) << std::endl;
+
+    
 }
 
         
