@@ -89,12 +89,20 @@ struct U
     float value1 { 0 }, value2 { 0 };
     float updateFunc(float* updatedValue)      //12
     {
-        if(updatedValue != nullptr)
+        FIXME: make this work.  replace 'that' with 'this'
+        FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
+        std::cout << "U's value1 value: " << that->value1 << std::endl;
+        that->value1 = *updatedValue;
+        std::cout << "U's value1 updated value: " << that->value1 << std::endl;
+        while( std::abs(that->value2 - that->value1) > 0.001f )
         {
-            if(value1 < value2) return value1;
-            if(value1 > value2) return value2; 
+            /*
+             write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
+             */
+            that->value2 += 0.5f ;
         }
-        return 0;    
+        std::cout << "U's value2 updated value: " << that->value2 << std::endl;
+        return that->value2 * that->value1;
     }
 };
 
@@ -102,6 +110,9 @@ struct StaticStruct
 {
     static float staticFunction(U* that, float* updatedValue)        //10
     {
+        FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
+        FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
+        FIXME: you have 2 pointers being used without checking them.
         std::cout << "U's value1 value: " << that->value1 << std::endl;
         that->value1 = *updatedValue;
         std::cout << "U's value1 updated value: " << that->value1 << std::endl;
@@ -124,6 +135,7 @@ int main()
     
     CompareStruct f;                                            //7
     auto* smaller = f.compare(&t1, &t2);                              //8
+    FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
     std::cout << "the smaller one is << " << smaller->name << std::endl; //9
     
     U u1;
