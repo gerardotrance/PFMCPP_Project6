@@ -87,34 +87,29 @@ struct CompareStruct                                //4
 struct U
 {
     float value1 { 0 }, value2 { 0 };
-    float updateFunc(float* updatedValue)      //12
+    float updateFunc(float updatedValue)      //12
     {
-        FIXME: make this work.  replace 'that' with 'this'
-        FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
-        std::cout << "U's value1 value: " << that->value1 << std::endl;
-        that->value1 = *updatedValue;
-        std::cout << "U's value1 updated value: " << that->value1 << std::endl;
-        while( std::abs(that->value2 - that->value1) > 0.001f )
+        std::cout << "U's value1 value: " << this->value1 << std::endl;
+        this->value1 = updatedValue;
+        std::cout << "U's value1 updated value: " << this->value1 << std::endl;
+        while( std::abs(this->value2 - this->value1) > 0.001f )
         {
             /*
              write something that makes the distance between that-><#name2#> and that-><#name1#> get smaller
              */
-            that->value2 += 0.5f ;
+            this->value2 += 0.5f ;
         }
-        std::cout << "U's value2 updated value: " << that->value2 << std::endl;
-        return that->value2 * that->value1;
+        std::cout << "U's value2 updated value: " << this->value2 << std::endl;
+        return this->value2 * this->value1;
     }
 };
 
 struct StaticStruct
 {
-    static float staticFunction(U* that, float* updatedValue)        //10
+    static float staticFunction(U* that, float updatedValue)        //10
     {
-        FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
-        FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
-        FIXME: you have 2 pointers being used without checking them.
         std::cout << "U's value1 value: " << that->value1 << std::endl;
-        that->value1 = *updatedValue;
+        that->value1 = updatedValue;
         std::cout << "U's value1 updated value: " << that->value1 << std::endl;
         while( std::abs(that->value2 - that->value1) > 0.001f )
         {
@@ -134,16 +129,16 @@ int main()
     T t2(2.5f ,"T2" );                                             //6
     
     CompareStruct f;                                            //7
-    auto* smaller = f.compare(&t1, &t2);                              //8
-    FIXME: DO NOT USE POINTERS BEFORE YOU CHECK THAT THEY ARE NOT nullptr
+    auto smaller = f.compare(&t1, &t2);                              //8
+
     std::cout << "the smaller one is << " << smaller->name << std::endl; //9
     
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] StaticStruct's multiplied values: " << StaticStruct::staticFunction(&u1 ,&updatedValue ) << std::endl;                  //11
+    std::cout << "[static func] StaticStruct's multiplied values: " << StaticStruct::staticFunction(&u1 ,updatedValue ) << std::endl;                  //11
     
     U u2;
-    std::cout << "[member func] U's multiplied values: " << u2.updateFunc( &updatedValue ) << std::endl;
+    std::cout << "[member func] U's multiplied values: " << u2.updateFunc( updatedValue ) << std::endl;
 }
 
         
