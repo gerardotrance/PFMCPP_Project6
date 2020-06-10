@@ -86,9 +86,10 @@ struct Struct1                                //4
 struct U
 {
     float value1 { 0 }, value2 { 0 };
-    float memberFunction(float* updatedValue)      //12
+    
+		float memberFunction(float* updatedValue)      //12
     {
-			  if(updatedValue != nullptr)
+		    if(updatedValue != nullptr)
 			  {
             std::cout << "value1 value: " << this->value1 << std::endl;
 				    this->value1 = *updatedValue;
@@ -108,7 +109,8 @@ struct U
 
 struct StaticStruct
 {
-    static float staticFunction(U* that, float* updatedValue ){
+    static float staticFunction(U* that, float* updatedValue )
+		{
         if(that != nullptr && updatedValue != nullptr)
 		    {
 			      std::cout << "U's value1 value: " << that->value1 << std::endl;
