@@ -28,14 +28,10 @@ struct T
 
 struct Struct1                                //4
 {
-    T* compare(T* a, T* b) //5
+    const T* compare(const T& a, const T& b) //5
     {
-        //1) check if a or b is a nullptr before using them
-        if(a != nullptr && b != nullptr)
-        {
-            if( a->value < b->value ) return a;
-            if( a->value > b->value ) return b;
-        }
+        if( a.value < b.value ) return &a;
+        if( a.value > b.value ) return &b;
         return nullptr;
     }
 };
@@ -44,49 +40,41 @@ struct U
 {
     float value1 { 0 }, value2 { 0 };
     
-    float memberFunction(float* updatedValue)      //12
+    float memberFunction(const float& updatedValue)      //12
     {
-        if(updatedValue != nullptr)
+        std::cout << "value1 value: " << this->value1 << std::endl;
+        this->value1 = updatedValue;
+        std::cout << "value1's updated value: " << this->value1 << std::endl;
+				    
+        while( std::abs(this->value2 - this->value1) > 0.001f)
         {
-            std::cout << "value1 value: " << this->value1 << std::endl;
-            this->value1 = *updatedValue;
-            std::cout << "value1's updated value: " << this->value1 << std::endl;
+            this->value2 += 0.1f;
+        }
 				    
-            while( std::abs(this->value2 - this->value1) > 0.001f)
-            {
-                this->value2 += 0.1f;
-            }
-				    
-            std::cout << "value2 updated value: " << this->value2 << std::endl;
+        std::cout << "value2 updated value: " << this->value2 << std::endl;
 			
-            return this->value2 * this->value1;
-        } 
-		
-        return 0;   
+        return this->value2 * this->value1;
+   
     }
 };
 
 struct StaticStruct
 {
-    static float staticFunction(U* that, float* updatedValue )
+    static float staticFunction(U& that, const float& updatedValue )
     {
-        if(that != nullptr && updatedValue != nullptr)
+        std::cout << "U's value1 value: " << that.value1 << std::endl;
+        that.value1 = updatedValue;
+        std::cout << "U's value1 updated value: " << that.value1 << std::endl;
+			      
+        while( std::abs(that.value2 - that.value1) > 0.001f )
         {
-            std::cout << "U's value1 value: " << that->value1 << std::endl;
-            that->value1 = *updatedValue;
-            std::cout << "U's value1 updated value: " << that->value1 << std::endl;
-			      
-            while( std::abs(that->value2 - that->value1) > 0.001f )
-            {
-                that->value2 += 0.1f ;
-            }
-			      
-            std::cout << "U's value2 updated value: " << that->value2 << std::endl;
-			
-            return that->value2 * that->value1;
+            that.value2 += 0.1f ;
         }
-        
-        return 0;
+			      
+        std::cout << "U's value2 updated value: " << that.value2 << std::endl;
+			
+        return that.value2 * that.value1;
+
     }
 };
         
@@ -110,7 +98,7 @@ int main()
     T t2(0.2f, "t2" );                                             //6
     
     Struct1 f;                                            //7
-    auto* smaller = f.compare( &t1, &t2 );              
+    auto smaller = f.compare( t1, t2 );              
     
     if(smaller != nullptr)
     {
@@ -119,10 +107,10 @@ int main()
     
     U u1;
     float updatedValue = 5.f;
-    std::cout << "[static func] u1's multiplied values: " << StaticStruct::staticFunction(&u1 , &updatedValue ) << std::endl;               //11
+    std::cout << "[static func] u1's multiplied values: " << StaticStruct::staticFunction(u1 , updatedValue ) << std::endl;               //11
     
     U u2;
-    std::cout << "[member func] u2's multiplied values: " << u2.memberFunction( &updatedValue ) << std::endl;
+    std::cout << "[member func] u2's multiplied values: " << u2.memberFunction( updatedValue ) << std::endl;
 }
 
         
