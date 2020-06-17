@@ -98,12 +98,9 @@ int main()
     T t2(0.2f, "t2" );                                             //6
     
     Struct1 f;                                            //7
-    auto smaller = f.compare( t1, t2 );              
-    
-    if(smaller != nullptr)
-    {
-        std::cout << "the smaller one is << " << smaller->name << std::endl; //9
-    }
+    auto* smaller = f.compare( t1, t2 );     
+    std::cout << "the smaller one is << " << smaller->name << std::endl; //9
+
     
     U u1;
     float updatedValue = 5.f;
